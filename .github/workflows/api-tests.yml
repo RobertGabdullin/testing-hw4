@@ -22,7 +22,7 @@ jobs:
 
       - name: Run smoke tests
         env:
-          BASE_URL: https://0gvb4wm1ur.internal.vm.culab.ru
+          BASE_URL: http://10.125.0.19:8080
         run: mvn clean test -Dgroups=smoke
 
   regression-tests:
@@ -41,7 +41,7 @@ jobs:
 
       - name: Run regression tests
         env:
-          BASE_URL: https://0gvb4wm1ur.internal.vm.culab.ru
+          BASE_URL: http://10.125.0.19:8080
         run: mvn clean test -Dgroups=regression
 
   e2e-tests:
@@ -60,5 +60,5 @@ jobs:
 
       - name: Run e2e tests
         env:
-          BASE_URL: https://0gvb4wm1ur.internal.vm.culab.ru
+          BASE_URL: http://10.125.0.19:8080
         run: mvn clean test -Dgroups=e2e
