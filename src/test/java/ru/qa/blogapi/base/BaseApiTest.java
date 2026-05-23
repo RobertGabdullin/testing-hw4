@@ -12,6 +12,11 @@ public abstract class BaseApiTest {
     protected static RequestSpecification requestSpec;
 
     @BeforeAll
+    static void setupSsl() {
+        RestAssured.useRelaxedHTTPSValidation();
+    }
+
+    @BeforeAll
     static void beforeAll() {
         RestAssured.baseURI = TestConfig.baseUrl();
 

@@ -7,9 +7,9 @@ on:
   workflow_dispatch:
 
 jobs:
-  api-tests:
+  smoke-tests:
+    name: Smoke tests
     runs-on: self-hosted
-
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -17,10 +17,48 @@ jobs:
       - name: Set up Java
         uses: actions/setup-java@v4
         with:
-          distribution: temurin
+          distribution: 'temurin'
           java-version: '17'
 
-      - name: Run tests
+      - name: Run smoke tests
         env:
-          BASE_URL: http://localhost:3000
-        run: mvn clean test
+          BASE_URL: https://0gvb4wm1ur.internal.vm.culab.ru
+        run: mvn clean test -Dgroups=smoke
+
+  regression-tests:
+    name: Regression tests
+    runs-on: self-hosted
+    needs: smoke-tests
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Run regression tests
+        env:
+          BASE_URL: https://0gvb4wm1ur.internal.vm.culab.ru
+        run: mvn clean test -Dgroups=regression
+
+  e2e-tests:
+    name: E2E tests
+    runs-on: self-hosted
+    needs: regression-tests
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Run e2e tests
+        env:
+          BASE_URL: https://0gvb4wm1ur.internal.vm.culab.ru
+        run: mvn clean test -Dgroups=e2e
